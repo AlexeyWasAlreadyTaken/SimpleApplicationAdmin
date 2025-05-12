@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import Config from '../settings/config';
 
 export default function CreateOrderForm() {
   const [name, setName] = useState('');
@@ -14,7 +15,7 @@ export default function CreateOrderForm() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    axios.get('https://localhost:7157/api/product')
+    axios.get(`${Config.API_BASE_URL}product`)
       .then(res => setAvailableProducts(res.data.map((p: any) => ({ id: p.id, name: p.name }))))
       .catch(err => console.error(err));
   }, []);
@@ -29,7 +30,7 @@ export default function CreateOrderForm() {
     e.preventDefault();
     const orderProducts = selectedProductIds.map(productId => ({ productId }));
 
-    await axios.post('https://localhost:7157/api/order', {
+    await axios.post(`${Config.API_BASE_URL}order`, {
       name,
       phone,
       comment,

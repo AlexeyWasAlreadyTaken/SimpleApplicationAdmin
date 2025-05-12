@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useParams, useNavigate } from 'react-router-dom';
 import { OrderDTO } from '../types/order';
+import Config from '../settings/config';
 
 export default function ViewOrder() {
   const { id } = useParams();
@@ -12,11 +13,11 @@ export default function ViewOrder() {
 
   useEffect(() => {
     if (id) {
-      axios.get(`https://localhost:7157/api/order/${id}`).then(res => {
+      axios.get(`${Config.API_BASE_URL}order/${id}`).then(res => {
         setOrder(res.data);
         setSelectedProductIds(res.data.orderProducts.map((op: any) => op.productId));
       });
-      axios.get('https://localhost:7157/api/product').then(res => {
+      axios.get(`${Config.API_BASE_URL}product`).then(res => {
         const simplified = res.data.map((p: any) => ({ id: p.id, name: p.name }));
         setProducts(simplified);
       });
@@ -36,7 +37,7 @@ export default function ViewOrder() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!order) return;
-    await axios.put(`https://localhost:7157/api/order?id=${id}`, {
+    await axios.put(`${Config.API_BASE_URL}order?id=${id}`, {
       ...order,
       orderProducts: selectedProductIds.map(pid => ({ productId: pid }))
     });
@@ -47,7 +48,7 @@ export default function ViewOrder() {
     if (!id) return;
     const confirmed = confirm('Подтвердить удаление?');
     if (!confirmed) return;
-    await axios.delete(`https://localhost:7157/api/order/${id}`);
+    await axios.delete(`${Config.API_BASE_URL}order/${id}`);
     navigate('/orders');
   };
 

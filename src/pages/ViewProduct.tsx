@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useParams, useNavigate } from 'react-router-dom';
 import { ProductDTO } from '../types/product';
+import Config from '../settings/config';
 
 export default function ViewProduct() {
   const { id } = useParams();
@@ -10,7 +11,7 @@ export default function ViewProduct() {
 
   useEffect(() => {
     if (id) {
-      axios.get(`https://localhost:7157/api/product/${id}`).then(res => setProduct(res.data));
+      axios.get(`${Config.API_BASE_URL}product/${id}`).then(res => setProduct(res.data));
     }
   }, [id]);
 
@@ -21,7 +22,7 @@ export default function ViewProduct() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!product) return;
-    await axios.put(`https://localhost:7157/api/product?id=${id}`, product);
+    await axios.put(`${Config.API_BASE_URL}product?id=${id}`, product);
     navigate('/products');
   };
 
@@ -29,7 +30,7 @@ export default function ViewProduct() {
     if (!id) return;
     const confirmed = confirm('Подтвердить удаление?');
     if (!confirmed) return;
-    await axios.delete(`https://localhost:7157/api/product/${id}`);
+    await axios.delete(`${Config.API_BASE_URL}product/${id}`);
     navigate('/products');
   };
 

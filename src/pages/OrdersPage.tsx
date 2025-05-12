@@ -3,13 +3,16 @@ import axios from 'axios';
 import { OrderDTO } from '../types/order';
 import { Card } from '../components/ui/card';
 import { useNavigate } from 'react-router-dom';
+import Config from '../settings/config';
 
 export default function OrdersPage() {
   const [orders, setOrders] = useState<OrderDTO[]>([]);
   const navigate = useNavigate();
 
   useEffect(() => {
-    axios.get('https://localhost:7157/api/order')
+      const url = `${Config.API_BASE_URL}product`;
+      console.log("🧪 Using URL:", url); 
+      axios.get(`${Config.API_BASE_URL}order`)
       .then(res => setOrders(res.data))
       .catch(err => console.error(err));
   }, []);

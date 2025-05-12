@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import Config from '../settings/config';
 
 export default function CreateProductForm() {
   const [name, setName] = useState('');
@@ -15,7 +16,7 @@ export default function CreateProductForm() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    await axios.post('https://localhost:7157/api/product', {
+    await axios.post(`${Config.API_BASE_URL}product`, {
       name,
       description,
       fullDescription,

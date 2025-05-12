@@ -3,13 +3,16 @@ import axios from 'axios';
 import { ProductDTO } from '../types/product';
 import { Card } from '../components/ui/card';
 import { useNavigate } from 'react-router-dom';
+import Config from '../settings/config';
 
 export default function ProductsPage() {
   const [products, setProducts] = useState<ProductDTO[]>([]);
   const navigate = useNavigate();
 
   useEffect(() => {
-    axios.get('https://localhost:7157/api/product')
+      const url = `${Config.API_BASE_URL}product`;
+      console.log("🧪 Using URL:", url); 
+    axios.get(`${Config.API_BASE_URL}product`)
       .then(res => setProducts(res.data))
       .catch(err => console.error(err));
   }, []);
